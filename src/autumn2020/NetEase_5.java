@@ -1,5 +1,5 @@
 package autumn2020;
-
+import java.util.Scanner;
 public class NetEase_5
 {
     public static void main(String[] args) {
