@@ -1,3 +1,0 @@
-# HelloWorld
-None.
-123
