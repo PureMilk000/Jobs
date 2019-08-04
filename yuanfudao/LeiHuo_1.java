@@ -1,17 +1,24 @@
 
 import java.util.Scanner;
 
-public class Main
+public class LeiHuo_1
 {
     public static void main(String[] args)
     {
         Scanner in = new Scanner(System.in);
         int N = in.nextInt(),M = in.nextInt();
-        Window[] windows = new Window[N+1];
-        for (int i = N,j=1; i > 0; i--)
+        WindowNode head = new WindowNode(null);
+        WindowNode tail = new WindowNode(null);
+        head.next = tail;
+        tail.pre = head;
+        for (int i = 1; i <= N; i++)
         {
-            Window temp = new Window(j++,in.nextInt(),in.nextInt(),in.nextInt(),in.nextInt());
-            windows[i] = temp;
+            Window temp = new Window(i,in.nextInt(),in.nextInt(),in.nextInt(),in.nextInt());
+            WindowNode tempNode = new WindowNode(temp);
+            tempNode.next = head.next;
+            head.next.pre = tempNode;
+            tempNode.pre = head;
+            head.next = tempNode;
         }
         Point clickPositions[] = new Point[M];
         for (int i = 0; i < M; i++)
@@ -22,17 +29,34 @@ public class Main
         {
             boolean flag = false;
             Point curClick= clickPositions[i];
-            for (int j = 1; j <= N; j++)
+            WindowNode curNode = head.next;
+            while(curNode.val != null)
             {
-                if(isClicked(windows[j],curClick)){
-                    System.out.println(windows[j].id);
-                    exch(windows,j);
+                if(isClicked(curNode,curClick)){
+                    System.out.println(curNode.val.id);
+                    curNode.pre.next = curNode.next;
+                    curNode.next.pre = curNode.pre;
+                    curNode.next = head.next;
+                    head.next.pre = curNode;
+                    curNode.pre = head;
+                    head.next = curNode;
                     flag = true;
                     break;
                 }
+                curNode = curNode.next;
             }
             if(!flag)
                 System.out.println(-1);
+        }
+    }
+    static class WindowNode{
+        Window val;
+        WindowNode pre;
+        WindowNode next;
+
+        public WindowNode(Window val)
+        {
+            this.val = val;
         }
     }
     static void exch(Window[] windows,int a){
@@ -43,12 +67,12 @@ public class Main
         windows[1] = temp;
         return;
     }
-    static boolean isClicked(Window window,Point click){
-        if(click.x < window.x || click.y < window.y)
+    static boolean isClicked(WindowNode curNode,Point click){
+        if(click.x < curNode.val.x || click.y < curNode.val.y)
             return false;
-        if(click.x > window.x + window.width)
+        if(click.x > curNode.val.x + curNode.val.width)
             return false;
-        if(click.y > window.y + window.height)
+        if(click.y > curNode.val.y + curNode.val.height)
             return false;
         return true;
     }
