@@ -4,34 +4,37 @@ a = list(map(int,input().split()))
 # n = 4
 # a = [1, 2, 3, 4]
 
-total_score = []
-res = []
-for i in range(2**n):
-    aa = a.copy()
-    x = []
-    y = []
-    tmp = bin(i)[2:].zfill(n)
-    for idx, j in enumerate(str(tmp)):
-        if len(aa) > 0:
-            if aa[0] == aa[-1] and idx % 2 == 0:
-                x.append(aa.pop(0))
-            elif aa[0] == aa[-1] and idx % 2 != 0:
-                y.append(aa.pop(0))
-            elif idx % 2 == 0 and j == '0':
-                x.append(aa.pop(0))
-            elif idx % 2 == 0 and j == '1':
-                x.append(aa.pop())
-            elif idx % 2 != 0 and j == '0':
-                y.append(aa.pop(0))
-            elif idx % 2 != 0 and j == '1':
-                y.append(aa.pop())
-    sa = x[0]
-    sb = y[0]
-    for m in range(len(x)-1):
-        sa += abs(x[m+1]-x[m])
-    for m in range(len(y)-1):
-        sb += abs(y[m+1]-y[m])
-    st = sa + sb
-    total_score.append(st)
-    res.append(str(sa) + ' ' + str(sb))
-print(res[total_score.index(max(total_score))])
+if n == 1:
+    print(str(a[0]) + ' 0')
+else:
+    total_score = []
+    res = []
+    for i in range(2**n):
+        aa = a.copy()
+        x = []
+        y = []
+        tmp = bin(i)[2:].zfill(n)
+        for idx, j in enumerate(str(tmp)):
+            if len(aa) > 0:
+                if aa[0] == aa[-1] and idx % 2 == 0:
+                    x.append(aa.pop(0))
+                elif aa[0] == aa[-1] and idx % 2 != 0:
+                    y.append(aa.pop(0))
+                elif idx % 2 == 0 and j == '0':
+                    x.append(aa.pop(0))
+                elif idx % 2 == 0 and j == '1':
+                    x.append(aa.pop())
+                elif idx % 2 != 0 and j == '0':
+                    y.append(aa.pop(0))
+                elif idx % 2 != 0 and j == '1':
+                    y.append(aa.pop())
+        sa = x[0]
+        sb = y[0]
+        for m in range(len(x)-1):
+            sa += abs(x[m+1]-x[m])
+        for m in range(len(y)-1):
+            sb += abs(y[m+1]-y[m])
+        st = sa + sb
+        total_score.append(st)
+        res.append(str(sa) + ' ' + str(sb))
+    print(res[total_score.index(max(total_score))])
